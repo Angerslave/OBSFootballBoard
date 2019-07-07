@@ -37,10 +37,12 @@
         <Button x:Name="AwayScoreIncrement" Content="+1" HorizontalAlignment="Center" Margin="50,137,0,0" VerticalAlignment="Top" FontSize="24" Padding="5" Grid.Column="2" Click="AwayScoreIncrement_Click"/>
         <wpfx:MaskedTextBox x:Name="TimeBox" HorizontalAlignment="Center" Margin="0,0,0,0" Grid.Row="1" TextWrapping="Wrap" Text="00:00" VerticalAlignment="Top" FontSize="36" Mask="00:00" TextChanged="TimeBox_TextChanged"/>
         <Button x:Name="TimeStart" Content="Start" HorizontalAlignment="Center" Margin="0,55,132,0" Grid.Row="1" VerticalAlignment="Top" Width="60" Height="23" Click="TimeStart_Click"/>
-        <Button x:Name="TimeStop" Content="Stop" HorizontalAlignment="Center" Margin="0,55,0,0" Grid.Row="1" VerticalAlignment="Top" Width="60" Height="23" Click="TimeStop_Click"/>
+        <Button x:Name="TimeStop" Content="Stop" HorizontalAlignment="Center" Margin="0,55,0,0" Grid.Row="1" VerticalAlignment="Top" Width="60" Height="23" Click="TimeStop_Click" IsEnabled="False"/>
         <Button x:Name="TimeReset" Content="Reset" HorizontalAlignment="Center" Margin="132,55,0,0" Grid.Row="1" VerticalAlignment="Top" Width="60" Height="23" Click="TimeReset_Click"/>
         <Label Content="Half" HorizontalAlignment="Right" Margin="0,6.333,111,0" Grid.Row="1" VerticalAlignment="Top" Padding="0,3,0,3" FontSize="18" Grid.Column="2"/>
         <RadioButton x:Name="TimeHalfFirst" Content="1st" HorizontalAlignment="Right" Margin="0,10.333,64,0" Grid.Row="1" VerticalAlignment="Top" GroupName="TimeHalf" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=TimeHalfFirst, Mode=TwoWay}" FontSize="18" RenderTransformOrigin="0,0.2" Grid.Column="2" Checked="TimeHalfFirst_Checked"/>
         <RadioButton x:Name="TimeHalfSecond" Content="2nd" HorizontalAlignment="Right" Margin="0,10.333,10,0" Grid.Row="1" VerticalAlignment="Top" GroupName="TimeHalf" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=TimeHalfSecond, Mode=TwoWay}" FontSize="18" Grid.Column="2" Checked="TimeHalfSecond_Checked"/>
+        <Label Content="Half Duration" HorizontalAlignment="Right" Margin="0,36.667,40.333,0" Grid.Row="1" VerticalAlignment="Top" Padding="0,3,0,3" FontSize="18" Grid.Column="2"/>
+        <wpfx:MaskedTextBox x:Name="TimeHalfDurationBox" HorizontalAlignment="Right" Margin="0,37.667,10.333,0" Grid.Row="1" Grid.Column="2" TextWrapping="Wrap" Text="{Binding Source={x:Static properties:Settings.Default}, Path=TimeHalfDuration, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" FontSize="18" Mask="90" TextChanged="TimeHalfDurationBox_TextChanged"/>
     </Grid>
 </Window>

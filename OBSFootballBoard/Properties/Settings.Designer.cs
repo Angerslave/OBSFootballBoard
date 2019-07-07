@@ -118,5 +118,17 @@ namespace OBSFootballBoard.Properties {
                 this["MainWindowHeight"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("35")]
+        public string TimeHalfDuration {
+            get {
+                return ((string)(this["TimeHalfDuration"]));
+            }
+            set {
+                this["TimeHalfDuration"] = value;
+            }
+        }
     }
 }

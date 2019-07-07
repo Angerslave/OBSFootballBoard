@@ -34,6 +34,8 @@ namespace OBSFootballBoard
                 AwayScore,
                 (sender, args) => Dumper.DumpMatch(OBSFootballBoard.Dumper.FileTypes.TeamAwayScore, ((TextBlock)sender).Text)
             );
+            ChangeScore(HomeScore, 0, HomeScoreDecrement);
+            ChangeScore(AwayScore, 0, AwayScoreDecrement);
 
             TimeTimer.Elapsed += TimeTimer_Elapsed;
         }
@@ -48,47 +50,70 @@ namespace OBSFootballBoard
             Dumper.DumpMatch(OBSFootballBoard.Dumper.FileTypes.TeamAwayName, ((TextBox)sender).Text);
         }
 
-        private void ChangeScore(TextBlock Box, int Change)
+        private void ChangeScore(TextBlock Box, int Change, Button DecrementButton)
         {
             int currentScore = int.Parse(Box.Text);
             currentScore = System.Math.Max(currentScore + Change, 0);
 
             Box.Text = currentScore.ToString();
+            DecrementButton.IsEnabled = currentScore > 0;
         }
 
         private void HomeScoreIncrement_Click(object sender, RoutedEventArgs e)
         {
-            ChangeScore(HomeScore, 1);
+            ChangeScore(HomeScore, 1, HomeScoreDecrement);
         }
 
         private void HomeScoreDecrement_Click(object sender, RoutedEventArgs e)
         {
-            ChangeScore(HomeScore, -1);
+            ChangeScore(HomeScore, -1, HomeScoreDecrement);
         }
 
         private void AwayScoreIncrement_Click(object sender, RoutedEventArgs e)
         {
-            ChangeScore(AwayScore, 1);
+            ChangeScore(AwayScore, 1, AwayScoreDecrement);
         }
 
         private void AwayScoreDecrement_Click(object sender, RoutedEventArgs e)
         {
-            ChangeScore(AwayScore, -1);
+            ChangeScore(AwayScore, -1, AwayScoreDecrement);
+        }
+
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            Properties.Settings.Default.Save();
         }
 
         private void TimeHalfSecond_Checked(object sender, RoutedEventArgs e)
         {
             Dumper.DumpMatch(OBSFootballBoard.Dumper.FileTypes.TimeHalf, "2");
+
+            TimeSeconds = 0;
+            TimeMinutes = uint.Parse(Properties.Settings.Default.TimeHalfDuration);
+            UpdateTimeBox();
         }
 
         private void TimeHalfFirst_Checked(object sender, RoutedEventArgs e)
         {
             Dumper.DumpMatch(OBSFootballBoard.Dumper.FileTypes.TimeHalf, "1");
+
+            TimeSeconds = 0;
+            TimeMinutes = 0;
+            UpdateTimeBox();
         }
 
-        private void Window_Closing(object sender, CancelEventArgs e)
+        private void TimeHalfDurationBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            OBSFootballBoard.Properties.Settings.Default.Save();
+            if ((bool)TimeHalfSecond.IsChecked && !TimeTimer.Enabled)
+            {
+                try
+                {
+                    TimeMinutes = uint.Parse(Properties.Settings.Default.TimeHalfDuration);
+                    TimeSeconds = 0;
+                    UpdateTimeBox();
+                }
+                catch (FormatException) { }
+            }
         }
 
         private void TimeTimer_Elapsed(object sender, ElapsedEventArgs e)
@@ -103,8 +128,14 @@ namespace OBSFootballBoard
             UpdateTimeBox();
         }
 
-        private void UpdateTimeBox()
+        private void UpdateTimeBox(Nullable<bool> StartIsDisabled = null)
         {
+            if (!(StartIsDisabled is null))
+            {
+                TimeStart.IsEnabled = !(bool)StartIsDisabled;
+                TimeStop.IsEnabled = (bool)StartIsDisabled;
+            }
+
             Dispatcher.Invoke(new Action(() =>
             {
                 TimeBox.Text = TimeMinutes.ToString("00") + CultureInfo.CurrentCulture.DateTimeFormat.TimeSeparator + TimeSeconds.ToString("00");
@@ -114,12 +145,13 @@ namespace OBSFootballBoard
         private void TimeStart_Click(object sender, RoutedEventArgs e)
         {
             TimeTimer.Start();
-            UpdateTimeBox();
+            UpdateTimeBox(true);
         }
 
         private void TimeStop_Click(object sender, RoutedEventArgs e)
         {
             TimeTimer.Stop();
+            UpdateTimeBox(false);
         }
 
         private void TimeReset_Click(object sender, RoutedEventArgs e)
@@ -127,7 +159,7 @@ namespace OBSFootballBoard
             TimeTimer.Stop();
             TimeMinutes = 0;
             TimeSeconds = 0;
-            UpdateTimeBox();
+            UpdateTimeBox(false);
         }
 
         private void TimeBox_TextChanged(object sender, TextChangedEventArgs e)
