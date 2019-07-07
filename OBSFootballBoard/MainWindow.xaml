@@ -1,0 +1,46 @@
+﻿<Window x:Class="OBSFootballBoard.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OBSFootballBoard"
+        xmlns:properties="clr-namespace:OBSFootballBoard.Properties"
+        xmlns:wpfx="http://schemas.xceed.com/wpf/xaml/toolkit"
+        mc:Ignorable="d"
+        Title="OBSFootballBoard" MinWidth="360"
+        Closing="Window_Closing"
+        Width="{Binding Source={x:Static properties:Settings.Default}, Path=MainWindowWidth, Mode=TwoWay}"
+        Height="{Binding Source={x:Static properties:Settings.Default}, Path=MainWindowHeight, Mode=TwoWay}"
+        >
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="25"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.DataContext>
+            <ObjectDataProvider ObjectInstance="Home"/>
+        </Grid.DataContext>
+        <Label Content="Home" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top"/>
+        <Label Content="Away" HorizontalAlignment="Center" Margin="0,10,0,0" VerticalAlignment="Top" Grid.Column="2"/>
+        <TextBox HorizontalAlignment="Center" Height="23" Margin="0,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" Text="{Binding Source={x:Static properties:Settings.Default}, Path=HomeName, Mode=TwoWay}" TextChanged="HomeNameChanged"/>
+        <TextBox Grid.Column="2" HorizontalAlignment="Center" Height="23" Margin="0,41,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="150" Text="{Binding Source={x:Static properties:Settings.Default}, Path=AwayName, Mode=TwoWay}"/>
+        <TextBlock x:Name="HomeScore" HorizontalAlignment="Center" Margin="0,69,0,0" TextWrapping="Wrap" Text="{Binding Source={x:Static properties:Settings.Default}, Path=HomeScore, Mode=TwoWay}" VerticalAlignment="Top" FontSize="48"/>
+        <TextBlock x:Name="AwayScore" HorizontalAlignment="Center" Margin="0,69,0,0" TextWrapping="Wrap" Text="{Binding Source={x:Static properties:Settings.Default}, Path=AwayScore, Mode=TwoWay}" VerticalAlignment="Top" Grid.Column="2" FontSize="48"/>
+        <Button x:Name="HomeScoreDecrement" Content="-1" HorizontalAlignment="Center" Margin="0,137,50,0" VerticalAlignment="Top" FontSize="24" Padding="5" Click="HomeScoreDecrement_Click"/>
+        <Button x:Name="HomeScoreIncrement" Content="+1" HorizontalAlignment="Center" Margin="50,137,0,0" VerticalAlignment="Top" FontSize="24" Padding="5" Click="HomeScoreIncrement_Click"/>
+        <Button x:Name="AwayScoreDecrement" Content="-1" HorizontalAlignment="Center" Margin="0,137,50,0" VerticalAlignment="Top" FontSize="24" Padding="5" Grid.Column="2" Click="AwayScoreDecrement_Click"/>
+        <Button x:Name="AwayScoreIncrement" Content="+1" HorizontalAlignment="Center" Margin="50,137,0,0" VerticalAlignment="Top" FontSize="24" Padding="5" Grid.Column="2" Click="AwayScoreIncrement_Click"/>
+        <wpfx:MaskedTextBox x:Name="TimeBox" HorizontalAlignment="Center" Margin="0,0,0,0" Grid.Row="1" TextWrapping="Wrap" Text="00:00" VerticalAlignment="Top" FontSize="36" Mask="00:00" TextChanged="TimeBox_TextChanged"/>
+        <Button x:Name="TimeStart" Content="Start" HorizontalAlignment="Center" Margin="0,55,132,0" Grid.Row="1" VerticalAlignment="Top" Width="60" Height="23" Click="TimeStart_Click"/>
+        <Button x:Name="TimeStop" Content="Stop" HorizontalAlignment="Center" Margin="0,55,0,0" Grid.Row="1" VerticalAlignment="Top" Width="60" Height="23" Click="TimeStop_Click"/>
+        <Button x:Name="TimeReset" Content="Reset" HorizontalAlignment="Center" Margin="132,55,0,0" Grid.Row="1" VerticalAlignment="Top" Width="60" Height="23" Click="TimeReset_Click"/>
+        <Label Content="Half" HorizontalAlignment="Right" Margin="0,6.333,111,0" Grid.Row="1" VerticalAlignment="Top" Padding="0,3,0,3" FontSize="18" Grid.Column="2"/>
+        <RadioButton x:Name="TimeHalfFirst" Content="1st" HorizontalAlignment="Right" Margin="0,10.333,64,0" Grid.Row="1" VerticalAlignment="Top" GroupName="TimeHalf" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=TimeHalfFirst, Mode=TwoWay}" FontSize="18" RenderTransformOrigin="0,0.2" Grid.Column="2" Checked="TimeHalfFirst_Checked"/>
+        <RadioButton x:Name="TimeHalfSecond" Content="2nd" HorizontalAlignment="Right" Margin="0,10.333,10,0" Grid.Row="1" VerticalAlignment="Top" GroupName="TimeHalf" IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=TimeHalfSecond, Mode=TwoWay}" FontSize="18" Grid.Column="2" Checked="TimeHalfSecond_Checked"/>
+    </Grid>
+</Window>
